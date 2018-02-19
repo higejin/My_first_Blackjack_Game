@@ -1,14 +1,14 @@
 
 import random
 
-card = [['sA', 's2','s3','s4','s5','s6','s7','s8','s9','s10','sJ','sQ','sK'],
-        ['hA', 'h2','h3','h4','h5','h6','h7','h8','h9','h10','hJ','hQ','hK'],
-        ['cA', 'c2','c3','c4','c5','c6','c7','c8','c9','c10','cJ','cQ','cK'],
-        ['dA', 'd2','d3','d4','d5','d6','d7','d8','d9','d10','dJ','dQ','dK']]
-num = {'sA':11,'s2':2,'s3':3,'s4':4,'s5':5,'s6':6,'s7':7,'s8':8,'s9':9,'s10':10,'sJ':10,'sQ':10,'sK':10,
-       'hA':11,'h2':2,'h3':3,'h4':4,'h5':5,'h6':6,'h7':7,'h8':8,'h9':9,'h10':10,'hJ':10,'hQ':10,'hK':10,
-       'cA':11,'c2':2,'c3':3,'c4':4,'c5':5,'c6':6,'c7':7,'c8':8,'c9':9,'c10':10,'cJ':10,'cQ':10,'cK':10,
-       'dA':11,'d2':2,'d3':3,'d4':4,'d5':5,'d6':6,'d7':7,'d8':8,'d9':9,'d10':10,'dJ':10,'dQ':10,'dK':10,}
+card = ['sA', 's2','s3','s4','s5','s6','s7','s8','s9','s10','sJ','sQ','sK',
+        'hA', 'h2','h3','h4','h5','h6','h7','h8','h9','h10','hJ','hQ','hK',
+        'cA', 'c2','c3','c4','c5','c6','c7','c8','c9','c10','cJ','cQ','cK',
+        'dA', 'd2','d3','d4','d5','d6','d7','d8','d9','d10','dJ','dQ','dK']
+num = {'sA':1,'s2':2,'s3':3,'s4':4,'s5':5,'s6':6,'s7':7,'s8':8,'s9':9,'s10':10,'sJ':10,'sQ':10,'sK':10,
+       'hA':1,'h2':2,'h3':3,'h4':4,'h5':5,'h6':6,'h7':7,'h8':8,'h9':9,'h10':10,'hJ':10,'hQ':10,'hK':10,
+       'cA':1,'c2':2,'c3':3,'c4':4,'c5':5,'c6':6,'c7':7,'c8':8,'c9':9,'c10':10,'cJ':10,'cQ':10,'cK':10,
+       'dA':1,'d2':2,'d3':3,'d4':4,'d5':5,'d6':6,'d7':7,'d8':8,'d9':9,'d10':10,'dJ':10,'dQ':10,'dK':10,}
 
 class Player(object):
 
@@ -33,25 +33,23 @@ class Player(object):
                 break
 
     def show_hand(self):
-        print("Player's hand : ",end="")
-        for card in self.hand:
-            print(card + "  ", end="")
+        print("Player's hand : ", end = "")
+        for mycard in self.hand:
+            print(mycard + "  ", end = "")
 
         print(" (" + self.check_hand() + ")")
 
     def check_hand(self):
         x = 0
-        numberOfA = 0
+        includeA = False
 
         for i in self.hand:
             if i == ('sA' or 'hA' or 'cA' or 'dA'):
-                numberOfA += 1
+                includeA = True
             x += num[i]
 
-        while numberOfA > 0:
-            if x > 21:
-                x -= 10
-                numberOfA -= 1
+        if includeA == True and x < 12:
+            x += 10
 
         if x > 21:
             return 'Bust!'
@@ -71,55 +69,52 @@ class Dealer(object):
 
     def show_hand(self):
         print("Dealer's hand : ", end ="")
-        for card in self.hand:
-            print(card + "  ", end ="")
+        for mycard in self.hand:
+            print(mycard + "  ", end ="")
 
         print(" (" + str(self.check_hand()) + ")")
 
     def check_hand(self):
-        y = 0
-        numberOfA = 0
+        x = 0
+        includeA = False
 
         for i in self.hand:
             if i == ('sA' or 'hA' or 'cA' or 'dA'):
-                numberOfA += 1
-            y += num[i]
+                includeA = True
+            x += num[i]
 
-        while numberOfA > 0:
-            if y > 21:
-                y -= 10
-                numberOfA -= 1
+        if includeA and x < 12:
+            x += 10
 
-        if y > 21:
+        if x > 21:
             return 'Bust!'
 
-        elif len(self.hand) == 2 and y == 21:
+        elif len(self.hand) == 2 and x == 21:
             return 'Natural 21!'
 
         else:
-            return y
+            return x
 
 class Decks(object):
 
     def __init__(self, numberOfDecks = 1):
         self.numberOfDecks = numberOfDecks
-        self.card = [['sA', 's2','s3','s4','s5','s6','s7','s8','s9','s10','sJ','sQ','sK'],
-                     ['hA', 'h2','h3','h4','h5','h6','h7','h8','h9','h10','hJ','hQ','hK'],
-                     ['cA', 'c2','c3','c4','c5','c6','c7','c8','c9','c10','cJ','cQ','cK'],
-                     ['dA', 'd2','d3','d4','d5','d6','d7','d8','d9','d10','dJ','dQ','dK']]
+        self.card = ['sA', 's2','s3','s4','s5','s6','s7','s8','s9','s10','sJ','sQ','sK',
+                     'hA', 'h2','h3','h4','h5','h6','h7','h8','h9','h10','hJ','hQ','hK',
+                     'cA', 'c2','c3','c4','c5','c6','c7','c8','c9','c10','cJ','cQ','cK',
+                     'dA', 'd2','d3','d4','d5','d6','d7','d8','d9','d10','dJ','dQ','dK']
 
     def random_pic(self):
         while True:
-            suit = random.randint(0,3)
 
             try:
-                selectedCard = random.choice(self.card[suit])
+                selectedCard = random.choice(self.card)
 
             except:
-                print(suit)
-                continue
+                print("there is no card.")
+                exit()
             else:
-                self.card[suit].remove(selectedCard)
+                self.card.remove(selectedCard)
                 return selectedCard
 
 
@@ -154,7 +149,7 @@ def determine_outcome(p,d):
         elif d.check_hand() == 'Bust!':
             print('You win!')
             p.add_bankroll(p.betAmount)
-        elif d.check_hand() == p.check_hand():
+        elif d.check_hand() == int(p.check_hand()):
             print('push')
         elif int(d.check_hand()) > int(p.check_hand()):
             print('You lose!')
